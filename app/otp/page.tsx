@@ -22,7 +22,7 @@ export default function LoginPage() {
     })
 
     async function onSubmit(data: z.infer<typeof FormSchema>) {
-        const response = await fetch('http://localhost:3333/api/v1.0/auth/login/verify/otp', {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1.0/auth/login/verify/otp`, {
             method: 'POST', body: JSON.stringify({
                 "email": "test1@example.com",
                 "code": data.pin,

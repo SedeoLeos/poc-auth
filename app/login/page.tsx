@@ -31,10 +31,10 @@ export default function LoginPage() {
     const handleOauth = async (event: any) => {
         console.log('*********')
         event.preventDefault();
-        window.location.href = `http://localhost:3333/api/v1.0/auth/google`;
+        window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/api/v1.0/auth/google`;
     };
     const loginWithEmail = async (email = 'test1@example.com') => {
-        const [error, response] = await to(fetch(`http://localhost:3333/api/v1.0/auth/login`, {
+        const [error, response] = await to(fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1.0/auth/login`, {
             method: 'post', body: JSON.stringify({ email }), headers: {
                 "Content-Type": "application/json"
             },

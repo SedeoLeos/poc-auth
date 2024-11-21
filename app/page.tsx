@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 
 export default function Home() {
   const getMe = async () => {
-    return fetch('http://localhost:3333/api/v1.0/users/me',{
+    return fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1.0/users/me`,{
       credentials: 'include', 
     })
   }
