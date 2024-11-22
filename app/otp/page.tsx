@@ -8,11 +8,13 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { redirect } from 'next/navigation'
 import { useForm } from "react-hook-form"
 import { z } from "zod"
+import { loginWithOtp } from "./_actions/loginWith"
 const FormSchema = z.object({
     pin: z.string().min(6, {
         message: "Your one-time password must be 6 characters.",
     }),
 })
+
 export default function LoginPage() {
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
@@ -22,18 +24,12 @@ export default function LoginPage() {
     })
 
     async function onSubmit(data: z.infer<typeof FormSchema>) {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1.0/auth/login/verify/otp`, {
-            method: 'POST', body: JSON.stringify({
-                "email": "test1@example.com",
-                "code": data.pin,
-            }), headers: {
-                "Content-Type": "application/json"
-            },
-        })
-        if (response.status < 300) {
-
-            const data = await response.json()
+        const { data: dataResponse, error } = await loginWithOtp(data.pin)
+        if (dataResponse) {
             redirect('/')
+        }
+        else {
+            alert(JSON.stringify(error))
         }
 
     }

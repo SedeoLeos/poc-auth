@@ -2,21 +2,19 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { getMe } from "./_actions/getMe";
 
 export default function Home() {
-  const getMe = async () => {
-    return fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1.0/users/me`,{
-      credentials: 'include', 
-    })
-  }
-  const { data, setData } = useState(null)
+
+  const [ data, setData ] = useState<Record<string, unknown>>({})
   useEffect(() => {
-    getMe().then((value) => {
-      value.json().then((subData) => {
-        console.log('value', subData)
-      })
+    getMe().then(({ data: dataResponse })=> {
+
+      if(dataResponse) {
+        setData(dataResponse)
+      }
     })
-  })
+  },[])
 
 
   return (
@@ -34,7 +32,7 @@ export default function Home() {
           <li className="mb-2">
             Get started by editing{" "}
             <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
+              {JSON.stringify(data)}
             </code>
             .
           </li>
